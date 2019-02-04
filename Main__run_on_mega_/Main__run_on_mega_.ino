@@ -1,12 +1,23 @@
 #include <AccelStepper.h>
-#include <MultiStepper.h>
 
-void setup() {
-  // put your setup code here, to run once:
+// Define a stepper and the pins it will use
+AccelStepper stepper(AccelStepper::DRIVER, 9, 8);
 
+int pos = 3600;
+
+void setup()
+{  
+  stepper.setMaxSpeed(3000);
+  stepper.setAcceleration(1000);
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-
+void loop()
+{
+  if (stepper.distanceToGo() == 0)
+  {
+    delay(500);
+    pos = -pos;
+    stepper.moveTo(pos);\
+  }
+  stepper.run();
 }
