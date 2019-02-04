@@ -1,23 +1,32 @@
 #include <AccelStepper.h>
 
-// Define a stepper and the pins it will use
-AccelStepper stepper(AccelStepper::DRIVER, 9, 8);
+// Define two steppers and the pins they will use
+AccelStepper stepper1(AccelStepper::DRIVER, 9, 8);
+AccelStepper stepper2(AccelStepper::DRIVER, 7, 6);
 
-int pos = 3600;
+int pos1 = 3600;
+int pos2 = 5678;
 
 void setup()
 {  
-  stepper.setMaxSpeed(3000);
-  stepper.setAcceleration(1000);
+  stepper1.setMaxSpeed(3000);
+  stepper1.setAcceleration(1000);
+  stepper2.setMaxSpeed(2000);
+  stepper2.setAcceleration(800);
 }
 
 void loop()
 {
-  if (stepper.distanceToGo() == 0)
+  if (stepper1.distanceToGo() == 0)
   {
-    delay(500);
-    pos = -pos;
-    stepper.moveTo(pos);\
+     pos1 = -pos1; 
+    stepper1.moveTo(pos1);
   }
-  stepper.run();
+  if (stepper2.distanceToGo() == 0)
+  {
+    pos2 = -pos2;
+    stepper2.moveTo(pos2);
+  }
+  stepper1.run();
+  stepper2.run();
 }
