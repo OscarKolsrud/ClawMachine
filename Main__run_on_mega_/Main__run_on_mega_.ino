@@ -9,8 +9,10 @@ int pos2 = 5678;
 
 void setup()
 {  
+  //Stepper 1 setup
   stepper1.setMaxSpeed(3000);
   stepper1.setAcceleration(1000);
+  //Stepper 2 setup
   stepper2.setMaxSpeed(2000);
   stepper2.setAcceleration(800);
 }
