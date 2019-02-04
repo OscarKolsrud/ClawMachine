@@ -1,5 +1,6 @@
 void setup() {
   // put your setup code here, to run once:
+  //Wkktor change
 pinMode(10, OUTPUT);
 }
 
