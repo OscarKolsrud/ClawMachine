@@ -1,6 +1,7 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 
+
 //Joystick defines START
 const int oppPin = 53;
 const int nedPin = 51;
@@ -18,6 +19,7 @@ const int limitX1 = 42;
 const int limitX2 = 40;
 const int limitY1 = 38;
 const int limitY2 = 36;
+const int limitZ1 = 30;
 //Limit switch defines END
 
 //LED defines START
@@ -33,7 +35,15 @@ int limitX1State = 0;
 int limitX2State = 0;
 int limitY1State = 0;
 int limitY2State = 0;
+int limitZ1State = 0;
+int limitZ2State = 0;
+int knappZ1State = 0;
+int knappZ2State = 0;
 //Input states END
+
+//State stores START
+int returnHomeSC
+//State stores END
 
 //Initiate stepper library START
 AccelStepper stepperX1(AccelStepper::DRIVER, 9, 8);
@@ -42,8 +52,11 @@ AccelStepper stepperX3(AccelStepper::DRIVER, 7, 6);
 AccelStepper stepperX4(AccelStepper::DRIVER, 7, 6);
 AccelStepper stepperY1(AccelStepper::DRIVER, 5, 4);
 AccelStepper stepperY2(AccelStepper::DRIVER, 5, 4);
+AccelStepper stepperZ1(AccelStepper::DRIVER, 3, 2);
+AccelStepper stepperZ2(AccelStepper::DRIVER, 3, 2);
 //Initiate stepper library END
- 
+
+
 
 void setup() {
   //pinMode(ledPin, OUTPUT);
@@ -51,6 +64,8 @@ void setup() {
   pinMode(nedPin, INPUT);
   pinMode(venstrePin, INPUT);
   pinMode(hoyrePin, INPUT);
+  pinMode(knappZ1, INPUT);
+  pinMode(knappZ2, INPUT);
   stepperX1.setMaxSpeed(1250);
   stepperX1.setAcceleration(1250);
   stepperX1.setSpeed(1250);
@@ -69,6 +84,13 @@ void setup() {
   stepperY2.setMaxSpeed(-1250);
   stepperY2.setAcceleration(-1250);
   stepperY2.setSpeed(-1250);
+  stepperZ1.setMaxSpeed(1250);
+  stepperZ1.setAcceleration(1250);
+  stepperZ1.setSpeed(1250);
+  stepperZ2.setMaxSpeed(-1250);
+  stepperZ2.setAcceleration(-1250);
+  stepperZ2.setSpeed(-1250);
+
 }
 
 void loop() {
@@ -80,6 +102,9 @@ void loop() {
   limitX2State = digitalRead(limitX2);
   limitY1State = digitalRead(limitY1);
   limitY2State = digitalRead(limitY2);
+  limitZ1State = digitalRead(limitZ1);
+  knappZ1State = digitalRead(knappZ1);
+  knappZ2State = digitalRead(knappZ2);
 
     if (oppState == HIGH && nedState == LOW && limitX1State == LOW && limitX2State == LOW) {
       stepperX2.runSpeed();
@@ -95,5 +120,21 @@ void loop() {
         if (hoyreState == HIGH && venstreState == LOW && limitY1State == LOW && limitY2State == LOW) {
           stepperY1.runSpeed();
           }
+          if (knappZ1State == HIGH && knappZ2State == LOW && limitZ1State == LOW) {
+            stepperZ1.runSpeed();
+          }
+          if (knappZ2State == HIGH && knappZ1State == LOW) {
+            stepperZ2.runSpeed();
+          }
+
 
 }
+/*
+ * Work In Progress
+boolean returnHome() {
+  if  (limitX1State = LOW) {
+      stepperX2.runSpeed();
+      stepperX3.runSpeed();
+    } else {
+      }
+  } */
