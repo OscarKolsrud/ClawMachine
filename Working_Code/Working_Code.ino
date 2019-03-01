@@ -60,6 +60,7 @@ int limitZ2State = 0;
 int knappZ1State = 0;
 int knappZ2State = 0;
 int knappRTHState = 0;
+int knappStartState = 0;
 //Input states END
 
 //States
