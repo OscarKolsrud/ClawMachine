@@ -115,7 +115,6 @@ void setup() {
   stepperZ2.setMaxSpeed(-1250);
   stepperZ2.setAcceleration(-1250);
   stepperZ2.setSpeed(-1250);
-  RTH = true;
 }
 
 void loop() {
@@ -139,6 +138,7 @@ if(knappStartState == HIGH && gameActive == false) {
   gameStart = millis();
   }  
 
+//Some random error here
 if(gameStart+10000 < millis() && gameActive == true){ 
   gameActive = false;
   RTH = true;
