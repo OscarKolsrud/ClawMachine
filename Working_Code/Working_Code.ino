@@ -17,7 +17,14 @@
 #include <MultiStepper.h>
 
 //Work around
-//we love our father stalin
+//We love our father stalin
+
+//Sleep defines START
+const int SleepX1 = 35;
+const int SleepX2 = 37;
+const int SleepY1 = 39;
+const int SleepZ1 = 41;
+//Sleep defines END
 
 //Joystick defines START
 const int oppPin = 40;
@@ -91,6 +98,10 @@ void setup() {
   pinMode(hoyrePin, INPUT);
   pinMode(knappZ1, INPUT);
   pinMode(knappZ2, INPUT);
+  pinMode(SleepX1, OUTPUT);
+  pinMode(SleepX2, OUTPUT);
+  pinMode(SleepY1, OUTPUT);
+  pinMode(SleepZ1, OUTPUT);
   stepperX1.setMaxSpeed(1250);
   stepperX1.setAcceleration(1250);
   stepperX1.setSpeed(1250);
@@ -143,7 +154,19 @@ if(gameStart+10000 < millis() && gameActive == true){
   gameActive = false;
   RTH = true;
   }
-  
+
+if(gameActive == false && RTH == false){
+  digitalWrite(SleepX1, LOW); 
+  digitalWrite(SleepX2, LOW);
+  digitalWrite(SleepY1, LOW);
+  digitalWrite(SleepZ1, LOW);
+} else {
+  digitalWrite(SleepX1, HIGH);
+  digitalWrite(SleepX2, HIGH);
+  digitalWrite(SleepY1, HIGH);
+  digitalWrite(SleepZ1, HIGH);
+} 
+
 if(gameActive){
     if (oppState == HIGH && nedState == LOW && limitX1State == LOW) {
       stepperX2.runSpeed();
