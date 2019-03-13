@@ -23,7 +23,7 @@
 const int SleepX1 = 35;
 const int SleepX2 = 37;
 const int SleepY1 = 39;
-const int SleepZ1 = 41;
+const int SleepZ1 = 41; 
 //Sleep defines END
 
 //Joystick defines START
@@ -150,7 +150,7 @@ if(knappStartState == HIGH && gameActive == false) {
   gameStart = millis();
   }  
 
-if(gameStart+10000 < millis() && gameActive == true){ 
+if(gameStart+60000 < millis() && gameActive == true){ 
   gameActive = false;
   RTH = true;
   }
