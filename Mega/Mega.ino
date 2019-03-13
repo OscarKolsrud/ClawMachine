@@ -19,6 +19,10 @@
 //Work around
 //We love our father stalin
 
+//Arduino com START
+const int com = 45;
+//Arduino com END
+
 //Sleep defines START
 const int SleepX1 = 35;
 const int SleepX2 = 37;
@@ -102,6 +106,8 @@ void setup() {
   pinMode(SleepX2, OUTPUT);
   pinMode(SleepY1, OUTPUT);
   pinMode(SleepZ1, OUTPUT);
+  pinMode(com, OUTPUT);
+  pinMode(11, OUTPUT);
   stepperX1.setMaxSpeed(1250);
   stepperX1.setAcceleration(1250);
   stepperX1.setSpeed(1250);
@@ -150,7 +156,7 @@ if(knappStartState == HIGH && gameActive == false) {
   gameStart = millis();
   }  
 
-if(gameStart+60000 < millis() && gameActive == true){ 
+if(gameStart+30000 < millis() && gameActive == true){ 
   gameActive = false;
   RTH = true;
   }
@@ -168,6 +174,7 @@ if(gameActive == false && RTH == false){
 } 
 
 if(gameActive){
+  digitalWrite(11, HIGH);
     if (oppState == HIGH && nedState == LOW && limitX1State == LOW) {
       stepperX2.runSpeed();
       stepperX3.runSpeed();
