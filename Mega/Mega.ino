@@ -108,30 +108,30 @@ void setup() {
   pinMode(SleepZ1, OUTPUT);
   pinMode(com, OUTPUT);
   pinMode(11, OUTPUT);
-  stepperX1.setMaxSpeed(1250);
-  stepperX1.setAcceleration(1250);
-  stepperX1.setSpeed(1250);
-  stepperX2.setMaxSpeed(-1250);
-  stepperX2.setAcceleration(-1250);
-  stepperX2.setSpeed(-1250);
-  stepperX3.setMaxSpeed(1250);
-  stepperX3.setAcceleration(1250);
-  stepperX3.setSpeed(1250);
-  stepperX4.setMaxSpeed(-1250);
-  stepperX4.setAcceleration(-1250);
-  stepperX4.setSpeed(-1250);
-  stepperY1.setMaxSpeed(1250);
-  stepperY1.setAcceleration(1250);
-  stepperY1.setSpeed(1250);
-  stepperY2.setMaxSpeed(-1250);
-  stepperY2.setAcceleration(-1250);
-  stepperY2.setSpeed(-1250);
-  stepperZ1.setMaxSpeed(1250);
-  stepperZ1.setAcceleration(1250);
-  stepperZ1.setSpeed(1250);
-  stepperZ2.setMaxSpeed(-1250);
-  stepperZ2.setAcceleration(-1250);
-  stepperZ2.setSpeed(-1250);
+  stepperX1.setMaxSpeed(-8000);
+  stepperX1.setAcceleration(-8000);
+  stepperX1.setSpeed(-8000);
+  stepperX2.setMaxSpeed(8000);
+  stepperX2.setAcceleration(8000);
+  stepperX2.setSpeed(8000);
+  stepperX3.setMaxSpeed(-8000);
+  stepperX3.setAcceleration(-8000);
+  stepperX3.setSpeed(-8000);
+  stepperX4.setMaxSpeed(8000);
+  stepperX4.setAcceleration(8000);
+  stepperX4.setSpeed(8000);
+  stepperY1.setMaxSpeed(8000);
+  stepperY1.setAcceleration(8000);
+  stepperY1.setSpeed(8000);
+  stepperY2.setMaxSpeed(-8000);
+  stepperY2.setAcceleration(-8000);
+  stepperY2.setSpeed(-8000);
+  stepperZ1.setMaxSpeed(8000);
+  stepperZ1.setAcceleration(8000);
+  stepperZ1.setSpeed(8000);
+  stepperZ2.setMaxSpeed(-8000);
+  stepperZ2.setAcceleration(-8000);
+  stepperZ2.setSpeed(-8000);
   RTH = true;
 }
 
@@ -151,7 +151,7 @@ void loop() {
   knappStartState = digitalRead(knappStart);
 
 
-if(knappStartState == HIGH && gameActive == false) {
+if(knappStartState == HIGH && gameActive == false && RTH == false) {
   gameActive = true;
   gameStart = millis();
   }  
@@ -206,13 +206,13 @@ if(gameActive){
    stepperX2.runSpeed();
    stepperX3.runSpeed();
     }
-   if(limitY1State == LOW){
-    stepperY2.runSpeed();}
+   if(limitY2State == LOW){
+    stepperY1.runSpeed();}
    if(limitZ1State == LOW){
     stepperZ1.runSpeed();
     }
     
-   if(limitX1State == HIGH && limitY1State == HIGH && limitZ1State == HIGH){
+   if(limitX1State == HIGH && limitY2State == HIGH && limitZ1State == HIGH){
     RTH = false;
     gameActive = false;
     }
