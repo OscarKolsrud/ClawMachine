@@ -16,9 +16,6 @@
 #include <AccelStepper.h>
 #include <MultiStepper.h>
 
-//Work around
-//We love our father stalin
-
 //Arduino com START
 const int com = 45;
 //Arduino com END
