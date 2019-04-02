@@ -51,7 +51,7 @@ const int limitZ1 = 25;
 //Limit switch defines END
 
 //LED defines START
-const int ledPin1 = 11;
+const int relay = 10;
 //LED defines END
 
 //Input states START
@@ -92,7 +92,7 @@ AccelStepper stepperZ2(AccelStepper::DRIVER, 3, 2);
 
 
 void setup() {
-  //pinMode(ledPin, OUTPUT);
+  pinMode(relay, OUTPUT);
   pinMode(oppPin, INPUT);
   pinMode(nedPin, INPUT);
   pinMode(venstrePin, INPUT);
@@ -151,11 +151,13 @@ void loop() {
 if(knappStartState == HIGH && gameActive == false && RTH == false) {
   gameActive = true;
   gameStart = millis();
+  digitalWrite(relay, HIGH);
   }  
 
 if(gameStart+30000 < millis() && gameActive == true){ 
   gameActive = false;
   RTH = true;
+  digitalWrite(relay, LOW);
   }
 
 if(gameActive == false && RTH == false){
