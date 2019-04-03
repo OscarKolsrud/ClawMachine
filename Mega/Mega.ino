@@ -45,13 +45,14 @@ const int resetPin = 20;
 //Limit switch defines START
 const int limitX1 = 27;
 const int limitX2 = 29;
-const int limitY1 = 31;
-const int limitY2 = 33;
+const int limitY1 = 33;
+const int limitY2 = 31;
 const int limitZ1 = 25;
 //Limit switch defines END
 
 //LED defines START
 const int relay = 10;
+const int buzzer = 11;
 //LED defines END
 
 //Input states START
@@ -104,7 +105,8 @@ void setup() {
   pinMode(SleepY1, OUTPUT);
   pinMode(SleepZ1, OUTPUT);
   pinMode(com, OUTPUT);
-  pinMode(11, OUTPUT);
+  pinMode(buzzer, OUTPUT);
+  pinMode(relay, OUTPUT);
   stepperX1.setMaxSpeed(-8000);
   stepperX1.setAcceleration(-8000);
   stepperX1.setSpeed(-8000);
@@ -123,12 +125,12 @@ void setup() {
   stepperY2.setMaxSpeed(-8000);
   stepperY2.setAcceleration(-8000);
   stepperY2.setSpeed(-8000);
-  stepperZ1.setMaxSpeed(8000);
-  stepperZ1.setAcceleration(8000);
-  stepperZ1.setSpeed(8000);
-  stepperZ2.setMaxSpeed(-8000);
-  stepperZ2.setAcceleration(-8000);
-  stepperZ2.setSpeed(-8000);
+  stepperZ2.setMaxSpeed(8000);
+  stepperZ2.setAcceleration(8000);
+  stepperZ2.setSpeed(8000);
+  stepperZ1.setMaxSpeed(-8000);
+  stepperZ1.setAcceleration(-8000);
+  stepperZ1.setSpeed(-8000);
   RTH = true;
 }
 
@@ -151,13 +153,13 @@ void loop() {
 if(knappStartState == HIGH && gameActive == false && RTH == false) {
   gameActive = true;
   gameStart = millis();
-  digitalWrite(relay, HIGH);
+  
   }  
 
 if(gameStart+30000 < millis() && gameActive == true){ 
   gameActive = false;
   RTH = true;
-  digitalWrite(relay, LOW);
+  
   }
 
 if(gameActive == false && RTH == false){
@@ -165,11 +167,13 @@ if(gameActive == false && RTH == false){
   digitalWrite(SleepX2, LOW);
   digitalWrite(SleepY1, LOW);
   digitalWrite(SleepZ1, LOW);
+  digitalWrite(relay, LOW);
 } else {
   digitalWrite(SleepX1, HIGH);
   digitalWrite(SleepX2, HIGH);
   digitalWrite(SleepY1, HIGH);
   digitalWrite(SleepZ1, HIGH);
+  digitalWrite(relay, HIGH);
 } 
 
 if(gameActive){
@@ -201,6 +205,7 @@ if(gameActive){
 }
           
  if(RTH) {
+  tone(buzzer, 1000);
   if(limitX1State == LOW){
    stepperX2.runSpeed();
    stepperX3.runSpeed();
@@ -212,6 +217,7 @@ if(gameActive){
     }
     
    if(limitX1State == HIGH && limitY2State == HIGH && limitZ1State == HIGH){
+    noTone(buzzer); 
     RTH = false;
     gameActive = false;
     }
