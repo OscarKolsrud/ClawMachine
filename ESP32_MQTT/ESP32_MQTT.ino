@@ -2,11 +2,12 @@
 #include <PubSubClient.h>
  
 const char* ssid = "SortlandKolsrudNETT";
-const char* password = "XXX-XXX-XXX";
+const char* password = "Barenettverk123";
 const char* mqttServer = "m24.cloudmqtt.com";
 const int mqttPort = 14523;
 const char* mqttUser = "iqtmxfoj";
 const char* mqttPassword = "i2V4Of9K1Nu8";
+char* receivedMessage;
  
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -25,8 +26,10 @@ Serial.print((char)payload[i]);
 Serial.println();
 Serial.println("-----------------------");
 digitalWrite(LED,HIGH);
+client.publish("callback","game_start");
 delay(1500);
 digitalWrite(LED,LOW);
+client.publish("callback","game_end");
 }
  
 void setup()
@@ -66,4 +69,5 @@ client.subscribe("esp32/esp32test");
 void loop()
 {
 client.loop();
+delay(150);
 }
