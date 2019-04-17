@@ -3,11 +3,16 @@
  
 const char* ssid = "SortlandKolsrudNETT";
 const char* password = "Barenettverk123";
-const char* mqttServer = "m24.cloudmqtt.com";
-const int mqttPort = 14523;
-const char* mqttUser = "iqtmxfoj";
-const char* mqttPassword = "i2V4Of9K1Nu8";
-char* receivedMessage;
+const char* mqttServer = "broker.shiftr.io";
+const int mqttPort = 1883;
+const char* mqttUser = "d65206d7";
+const char* mqttPassword = "ClawMachine";
+boolean gameStarted = false;
+int gameState = 0;
+
+int MEGAstart = 20;
+int MEGAend = 20;
+
  
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -25,15 +30,23 @@ Serial.print((char)payload[i]);
 }
 Serial.println();
 Serial.println("-----------------------");
-digitalWrite(LED,HIGH);
-client.publish("callback","game_start");
-delay(1500);
-digitalWrite(LED,LOW);
-client.publish("callback","game_end");
+gameStarted = true;
+client.publish("game_started","started");
+digitalWrite(LED, HIGH);
+delay(150);
+digitalWrite(LED, LOW);
+delay(150);
+digitalWrite(LED, HIGH);
+delay(150);
+digitalWrite(LED, LOW);
 }
  
 void setup()
 {
+pinMode(MEGAstart, OUTPUT);
+pinMode(MEGAend, INPUT);
+
+  
 Serial.begin(115200);
 WiFi.begin(ssid, password);
 pinMode(LED,OUTPUT);
@@ -62,12 +75,10 @@ Serial.print(client.state());
 delay(2000);
 }
 }
-client.subscribe("esp32/esp32test");
- 
+client.subscribe("game/online");
 }
  
 void loop()
 {
 client.loop();
-delay(150);
 }
