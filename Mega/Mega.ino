@@ -70,6 +70,7 @@ int knappZ1State = 0;
 int knappZ2State = 0;
 int knappRTHState = 0;
 int knappStartState = 0;
+int ESP32State = 0;
 //Input states END
 
 //States START
@@ -81,7 +82,6 @@ unsigned long gameStart;
 
 //Communication with ESP32 START
 int ESP32start = 22;
-int ESP32end = 24;
 //Communication with ESP32 END
 
 
@@ -116,7 +116,6 @@ void setup() {
   pinMode(relay, OUTPUT);
   //These are for communicating with the ESP32 
   pinMode(ESP32start, INPUT);
-  pinMode(ESP32end, OUTPUT);
   //These are configuration for the stepper motors
   stepperX1.setMaxSpeed(-8000);
   stepperX1.setAcceleration(-8000);
@@ -159,12 +158,17 @@ void loop() {
   knappZ2State = digitalRead(knappZ2);
   knappRTHState = digitalRead(knappRTH);
   knappStartState = digitalRead(knappStart);
+  ESP32State = digitalRead(ESP32start);
 
 
 if(knappStartState == HIGH && gameActive == false && RTH == false) {
   gameActive = true;
   gameStart = millis();
-  
+  }  
+
+if(ESP32State == HIGH && gameActive == false && RTH == false) {
+  gameActive = true;
+  gameStart = millis();
   }  
 
 if(gameStart+30000 < millis() && gameActive == true){ 
@@ -215,7 +219,6 @@ if(gameActive){
 }
           
  if(RTH) {
-  tone(buzzer, 1000);
   if(limitX1State == LOW){
    stepperX2.runSpeed();
    stepperX3.runSpeed();
@@ -226,8 +229,7 @@ if(gameActive){
     stepperZ1.runSpeed();
     }
     
-   if(limitX1State == HIGH && limitY2State == HIGH && limitZ1State == HIGH){
-    noTone(buzzer); 
+   if(limitX1State == HIGH && limitY2State == HIGH && limitZ1State == HIGH){ 
     RTH = false;
     gameActive = false;
     }

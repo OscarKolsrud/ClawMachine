@@ -7,12 +7,8 @@ const char* mqttServer = "broker.shiftr.io";
 const int mqttPort = 1883;
 const char* mqttUser = "d65206d7";
 const char* mqttPassword = "ClawMachine";
-boolean gameStarted = false;
-int gameState = 0;
 
-int MEGAstart = 20;
-int MEGAend = 20;
-
+int MEGA = 23;
  
 WiFiClient espClient;
 PubSubClient client(espClient);
@@ -30,8 +26,8 @@ Serial.print((char)payload[i]);
 }
 Serial.println();
 Serial.println("-----------------------");
-gameStarted = true;
 client.publish("game_started","started");
+digitalWrite(MEGA, HIGH);
 digitalWrite(LED, HIGH);
 delay(150);
 digitalWrite(LED, LOW);
@@ -39,17 +35,15 @@ delay(150);
 digitalWrite(LED, HIGH);
 delay(150);
 digitalWrite(LED, LOW);
+digitalWrite(MEGA, LOW);
 }
  
 void setup()
 {
-pinMode(MEGAstart, OUTPUT);
-pinMode(MEGAend, INPUT);
-
-  
 Serial.begin(115200);
 WiFi.begin(ssid, password);
 pinMode(LED,OUTPUT);
+pinMode(MEGA, OUTPUT);
  
 while (WiFi.status() != WL_CONNECTED)
 {
