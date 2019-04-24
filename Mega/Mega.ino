@@ -80,10 +80,6 @@ boolean gameActive = false;
 unsigned long gameStart;
 //States END
 
-//Communication with ESP32 START
-int ESP32start = 22;
-//Communication with ESP32 END
-
 
 //Initiate stepper library START
 AccelStepper stepperX1(AccelStepper::DRIVER, 7, 6);
@@ -114,8 +110,7 @@ void setup() {
   pinMode(com, OUTPUT);
   pinMode(buzzer, OUTPUT);
   pinMode(relay, OUTPUT);
-  //These are for communicating with the ESP32 
-  pinMode(ESP32start, INPUT);
+  pinMode(53, INPUT);
   //These are configuration for the stepper motors
   stepperX1.setMaxSpeed(-8000);
   stepperX1.setAcceleration(-8000);
@@ -142,6 +137,8 @@ void setup() {
   stepperZ1.setAcceleration(-8000);
   stepperZ1.setSpeed(-8000);
   RTH = true;
+
+  Serial.begin(115200);
 }
 
 void loop() {
@@ -158,9 +155,8 @@ void loop() {
   knappZ2State = digitalRead(knappZ2);
   knappRTHState = digitalRead(knappRTH);
   knappStartState = digitalRead(knappStart);
-  ESP32State = digitalRead(ESP32start);
-
-
+  ESP32State = digitalRead(53);
+  
 if(knappStartState == HIGH && gameActive == false && RTH == false) {
   gameActive = true;
   gameStart = millis();
@@ -169,7 +165,7 @@ if(knappStartState == HIGH && gameActive == false && RTH == false) {
 if(ESP32State == HIGH && gameActive == false && RTH == false) {
   gameActive = true;
   gameStart = millis();
-  }  
+  } 
 
 if(gameStart+30000 < millis() && gameActive == true){ 
   gameActive = false;

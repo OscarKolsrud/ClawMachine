@@ -1,19 +1,21 @@
+
 #include <WiFi.h>
 #include <PubSubClient.h>
  
-const char* ssid = "SortlandKolsrudNETT";
-const char* password = "Barenettverk123";
+const char* ssid = "Teknikernett";
+const char* password = "123456789";
 const char* mqttServer = "broker.shiftr.io";
 const int mqttPort = 1883;
 const char* mqttUser = "d65206d7";
 const char* mqttPassword = "ClawMachine";
 
-int MEGA = 23;
+int MEGA = 37;
  
 WiFiClient espClient;
 PubSubClient client(espClient);
 
 #define LED 2
+#define MEGA 23
 
 void callback(char* topic, byte* payload, unsigned int length)
 {
@@ -44,6 +46,7 @@ Serial.begin(115200);
 WiFi.begin(ssid, password);
 pinMode(LED,OUTPUT);
 pinMode(MEGA, OUTPUT);
+
  
 while (WiFi.status() != WL_CONNECTED)
 {
