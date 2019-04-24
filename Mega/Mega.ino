@@ -40,6 +40,8 @@ const int knappZ2 = 48;
 const int knappStart = 50;
 const int knappRTH = 46;
 const int resetPin = 20;
+const int ESP32Button = 53;
+const int changeGame = 13;
 //Button defines END
 
 //Limit switch defines START
@@ -71,6 +73,7 @@ int knappZ2State = 0;
 int knappRTHState = 0;
 int knappStartState = 0;
 int ESP32State = 0;
+int changeGameState = 0;
 //Input states END
 
 //States START
@@ -78,6 +81,7 @@ boolean limitX1RTH = false;
 boolean RTH = false;
 boolean gameActive = false;
 unsigned long gameStart;
+boolean gameFree = true;
 //States END
 
 
@@ -110,7 +114,7 @@ void setup() {
   pinMode(com, OUTPUT);
   pinMode(buzzer, OUTPUT);
   pinMode(relay, OUTPUT);
-  pinMode(53, INPUT);
+  pinMode(ESP32Button, INPUT);
   //These are configuration for the stepper motors
   stepperX1.setMaxSpeed(-8000);
   stepperX1.setAcceleration(-8000);
@@ -155,14 +159,21 @@ void loop() {
   knappZ2State = digitalRead(knappZ2);
   knappRTHState = digitalRead(knappRTH);
   knappStartState = digitalRead(knappStart);
-  ESP32State = digitalRead(53);
-  
-if(knappStartState == HIGH && gameActive == false && RTH == false) {
+  ESP32State = digitalRead(ESP32Button);
+  changeGameState = digitalRead(changeGame);
+
+if(changeGameState == HIGH && gameFree == true) {
+  gameFree = false;
+}
+
+if(knappStartState == HIGH && gameFree == true && gameActive == false && RTH == false) {
+  Serial.println("KNAPP startet spillet");
   gameActive = true;
   gameStart = millis();
   }  
 
 if(ESP32State == HIGH && gameActive == false && RTH == false) {
+  Serial.println("ESP32 startet spillet");
   gameActive = true;
   gameStart = millis();
   } 
