@@ -98,6 +98,7 @@ AccelStepper stepperZ1(AccelStepper::DRIVER, 3, 2);
 AccelStepper stepperZ2(AccelStepper::DRIVER, 3, 2);
 //Initiate stepper library END
 
+//Initiate the servo for claw
 Servo claw;
 
 
