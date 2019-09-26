@@ -15,6 +15,7 @@
 
 #include <AccelStepper.h>
 #include <MultiStepper.h>
+#include <Servo.h>
 
 //Arduino com START
 const int com = 45;
@@ -82,6 +83,7 @@ boolean RTH = false;
 boolean gameActive = false;
 unsigned long gameStart;
 boolean gameFree = true;
+boolean firstStart = true;
 //States END
 
 
@@ -96,9 +98,13 @@ AccelStepper stepperZ1(AccelStepper::DRIVER, 3, 2);
 AccelStepper stepperZ2(AccelStepper::DRIVER, 3, 2);
 //Initiate stepper library END
 
+Servo claw;
 
 
 void setup() {
+  //Setup the servo for the claw
+  claw.attach(24);
+  
   //These are for setting inputs and outputs
   pinMode(relay, OUTPUT);
   pinMode(oppPin, INPUT);
@@ -140,7 +146,7 @@ void setup() {
   stepperZ1.setMaxSpeed(-8000);
   stepperZ1.setAcceleration(-8000);
   stepperZ1.setSpeed(-8000);
-  RTH = true;
+  RTH = false;
 
   Serial.begin(115200);
 }
@@ -214,18 +220,21 @@ if(gameActive){
           stepperY1.runSpeed();
           }
           if (knappZ1State == HIGH && knappZ2State == LOW && limitZ1State == LOW) {
-            stepperZ1.runSpeed();
+            claw.write(180);
+            stepperZ1.runToNewPosition(-23000);
           }
           if (knappZ2State == HIGH && knappZ1State == LOW) {
-            stepperZ2.runSpeed();
+            claw.write(0);
+            stepperZ2.runToNewPosition(23000);
           }
         if (knappRTHState == HIGH){
           RTH = true;
           gameActive = false;
           }
 }
-          
- if(RTH) {
+
+ //RTH while the game is active         
+ if(firstStart) {
   if(limitX1State == LOW){
    stepperX2.runSpeed();
    stepperX3.runSpeed();
@@ -234,11 +243,27 @@ if(gameActive){
     stepperY1.runSpeed();}
    if(limitZ1State == LOW){
     stepperZ1.runSpeed();
+    stepperZ1.setCurrentPosition(0);
+    stepperZ1.setMaxSpeed(-8000);
+    stepperZ1.setAcceleration(-8000);
+    stepperZ1.setSpeed(-8000);
+    stepperZ2.setCurrentPosition(0);
+    stepperZ2.setMaxSpeed(-8000);
+    stepperZ2.setAcceleration(-8000);
+    stepperZ2.setSpeed(-8000);
     }
     
    if(limitX1State == HIGH && limitY2State == HIGH && limitZ1State == HIGH){ 
-    RTH = false;
+    firstStart = false;
     gameActive = false;
     }
+  }
+  
+  //RTH while the game is active
+  if(RTH){
+    claw.write(180);
+    stepperZ2.runToNewPosition(-22500);
+    claw.write(0);
+    stepperZ2.runToNewPosition(22500);
   }
 }
