@@ -164,8 +164,6 @@ void loop() {
   limitY1State = digitalRead(limitY1);
   limitY2State = digitalRead(limitY2);
   limitZ1State = digitalRead(limitZ1);
-  knappZ1State = digitalRead(knappZ1);
-  knappZ2State = digitalRead(knappZ2);
   knappRTHState = digitalRead(knappRTH);
   knappStartState = digitalRead(knappStart);
   ESP32State = digitalRead(ESP32Button);
@@ -223,12 +221,6 @@ if(gameActive){
         if (hoyreState == HIGH && venstreState == LOW && limitY2State == LOW) {
           stepperY1.runSpeed();
           }
-          if (knappZ1State == HIGH && knappZ2State == LOW && limitZ1State == LOW) {
-            stepperZ1.runSpeed();
-          }
-          if (knappZ2State == HIGH && knappZ1State == LOW) {
-            stepperZ2.runSpeed();
-          }
         if (knappRTHState == HIGH){
           ENDMove = true;
           //RTH = true;
@@ -270,8 +262,9 @@ if(gameActive){
     claw.write(0);
     stepperZ2.runToNewPosition(endSteps);
     claw.write(180);
+    delay(500);
     RTH= true;
     ENDMove = false;
-    endSteps = endSteps + 21000;
+    //endSteps = endSteps + 21000;
     }
 }
