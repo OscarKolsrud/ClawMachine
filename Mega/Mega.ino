@@ -84,6 +84,7 @@ boolean ENDMove = false;
 boolean gameActive = false;
 boolean executeEnd = false;
 boolean ZHome = false;
+boolean saferun = false;
 unsigned long gameStart;
 unsigned long endSteps;
 boolean gameFree = true;
@@ -169,8 +170,18 @@ void loop() {
   ESP32State = digitalRead(ESP32Button);
   changeGameState = digitalRead(changeGame);
 
+  //Emergency stop
+  knappZ1State = digitalRead(knappZ1);
+  knappZ2State = digitalRead(knappZ2);
+
 if(changeGameState == HIGH && gameFree == true) {
   gameFree = false;
+}
+
+if(knappZ1State == HIGH && knappZ2State == HIGH || limitZ1State == HIGH) {
+  saferun = false;
+} else {
+  saferun = true;
 }
 
 if(knappStartState == HIGH && gameFree == true && gameActive == false && RTH == false) {
@@ -235,14 +246,14 @@ if(gameActive){
     }
    if(limitY2State == LOW && ZHome){
     stepperY1.runSpeed();}
-   if(limitZ1State == LOW){
+   if(saferun){
     stepperZ1.runSpeed();
     ZHome = false;
     } else {
       ZHome = true;
     }
     
-   if(limitX1State == HIGH && limitY2State == HIGH && limitZ1State == HIGH){ 
+   if(limitX1State == HIGH && limitY2State == HIGH && saferun){ 
     claw.write(0);
     stepperZ1.setCurrentPosition(0);
     stepperZ2.setCurrentPosition(0);
@@ -258,7 +269,7 @@ if(gameActive){
   }
 
   if(ENDMove) {
-    endSteps = 21000;
+    endSteps = 21800;
     claw.write(0);
     stepperZ2.runToNewPosition(endSteps);
     claw.write(180);
